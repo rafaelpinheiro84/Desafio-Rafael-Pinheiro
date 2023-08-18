@@ -49,7 +49,6 @@ class CaixaDaLanchonete {
     if (itens.length === 0) {
       return 'Não há itens no carrinho de compra!'
     }
-
     let valorTotal = 0
     for (const item of itens) {
       const [produto, quantidade] = item.split(',')
@@ -69,20 +68,24 @@ class CaixaDaLanchonete {
     console.log('Valor total antes do desconto:', valorTotal)
 
     let desconto = 0
+    let acrescimo = 0
     if (metodoDePagamento === 'dinheiro') {
       desconto = 0.05 // 5% de desconto para pagamento no dinheiro
+      console.log('Desconto aplicado:', desconto)
     } else if (metodoDePagamento === 'credito') {
-      desconto = 0.03 // 3% de desconto para pagamento em crédito
+      acrescimo = 0.03 // Acréscimo de 3% para pagamento em crédito
+      console.log('Desconto aplicado:', desconto)
     } else if (metodoDePagamento === 'especie') {
       return 'Forma de pagamento inválida!' // Retorna mensagem para forma de pagamento inválida
     }
 
-    console.log('Desconto aplicado:', desconto)
-
     // Calcular o valor com desconto
     const valorComDesconto = valorTotal * (1 - desconto)
-
     console.log('Valor com desconto:', valorComDesconto)
+
+    const valorComAcrescimo = valorComDesconto * (1 + acrescimo)
+
+    console.log('Valor com acréscimo:', valorComDesconto)
 
     // Verificar se há itens extras e validar
     if (!this.validarItensPrincipais(itens)) {
@@ -91,14 +94,10 @@ class CaixaDaLanchonete {
     }
 
     // Formatar o valor com desconto para exibição
-    const valorFormatado = valorComDesconto.toLocaleString('pt-BR', {
-      style: 'currency',
-      currency: 'BRL'
-    })
-
-    console.log('Valor formatado:', valorFormatado)
-
-    return valorFormatado
+    const valorComAcrescimoFormatado = `R$ ${valorComAcrescimo
+      .toFixed(2)
+      .replace('.', ',')}`
+    return valorComAcrescimoFormatado
   }
 }
 
